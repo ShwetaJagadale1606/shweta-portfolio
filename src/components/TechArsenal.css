@@ -1,0 +1,299 @@
+.arsenal {
+  padding-top: var(--section-gap);
+}
+
+.arsenal__head-accent {
+  color: var(--accent);
+}
+
+/* --- Achievements marquee — single row --- */
+
+.arsenal__marquee {
+  overflow: hidden;
+  border-block: 1px solid var(--line-soft);
+  padding: 1.15rem 0;
+  margin-bottom: var(--section-gap);
+  user-select: none;
+}
+
+.arsenal__marquee-track {
+  display: flex;
+  width: max-content;
+  animation: arsenal-marquee 38s linear infinite;
+  will-change: transform;
+}
+
+@keyframes arsenal-marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+.arsenal__marquee-group {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.arsenal__marquee-item {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--font-serif);
+  font-size: clamp(1.5rem, 3.4vw, 2.5rem);
+  font-weight: 380;
+  letter-spacing: -0.01em;
+  line-height: 1;
+  white-space: nowrap;
+  color: var(--ink);
+}
+
+.arsenal__marquee-item--italic {
+  font-style: italic;
+  color: var(--ink-dim);
+}
+
+.arsenal__marquee-star {
+  font-size: 0.55em;
+  font-style: normal;
+  margin-inline: 1.4rem;
+  color: var(--accent);
+}
+
+.arsenal__marquee-item--italic .arsenal__marquee-star {
+  color: var(--accent-2);
+}
+
+/* --- Stage: globe → grid — full-bleed --- */
+
+.arsenal__stage-wrap {
+  width: 100%;
+  overflow: clip;
+}
+
+.arsenal__stage {
+  position: relative;
+  height: clamp(560px, 76vh, 740px);
+}
+
+/* --- Galaxy atmosphere — one canvas, zero layer artifacts --- */
+
+.arsenal__canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  /* dissolve into the page at the top and bottom — no box edges */
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 16%, #000 84%, transparent 100%);
+  mask-image: linear-gradient(to bottom, transparent 0%, #000 16%, #000 84%, transparent 100%);
+}
+
+/* Planet core + orbit rings */
+
+.arsenal__planet {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 100; /* between back (<100) and front (>100) cards — true occlusion */
+  pointer-events: none;
+  transition: opacity 0.9s var(--ease-out), transform 0.9s var(--ease-out);
+  transform: translate(-50%, -50%) rotate(-12deg);
+}
+
+.is-grid .arsenal__planet,
+.is-arranging .arsenal__planet {
+  opacity: 0;
+  transform: translate(-50%, -50%) rotate(-12deg) scale(0.85);
+}
+
+.arsenal__planet-core {
+  display: block;
+  position: relative;
+  width: clamp(190px, 26vw, 300px);
+  height: clamp(190px, 26vw, 300px);
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 32% 28%, rgba(139, 163, 255, 0.35) 0%, rgba(139, 163, 255, 0.08) 38%, transparent 60%),
+    radial-gradient(circle at 70% 75%, rgba(239, 138, 178, 0.18) 0%, transparent 55%),
+    radial-gradient(circle at 50% 50%, #1b1e30 0%, #101221 70%);
+  box-shadow:
+    inset -18px -14px 40px rgba(0, 0, 0, 0.55),
+    0 0 60px rgba(139, 163, 255, 0.18),
+    0 0 120px rgba(239, 138, 178, 0.08);
+}
+
+/* Breathing glow as an opacity-only layer — no repaint loop */
+.arsenal__planet-core::after {
+  content: '';
+  position: absolute;
+  inset: -12%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(139, 163, 255, 0.14) 0%, rgba(239, 138, 178, 0.05) 50%, transparent 70%);
+  animation: planet-breathe 6s ease-in-out infinite;
+  will-change: opacity;
+}
+
+@keyframes planet-breathe {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 1; }
+}
+
+/* Ring sizes are set from JS so the cards travel exactly on these lines.
+   Each ring is drawn twice: top (back) arc clipped behind the core,
+   bottom (front) arc clipped above it — real orbital occlusion. */
+.arsenal__ring {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  border: 1px dashed rgba(139, 163, 255, 0.25);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.arsenal__ring--r2 {
+  border-color: rgba(239, 138, 178, 0.18);
+}
+
+.arsenal__ring--back {
+  clip-path: inset(0 0 49.5% 0);
+}
+
+.arsenal__ring--front {
+  clip-path: inset(49.5% 0 0 0);
+}
+
+/* Cards — positioned imperatively from the animation loop */
+
+.arsenal-card {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.45rem;
+  transform: translate(-50%, -50%) scale(0);
+  opacity: 0;
+  pointer-events: none;
+  will-change: transform, opacity;
+}
+
+.is-grid .arsenal-card {
+  pointer-events: auto;
+}
+
+/* Little planets — real planetary palettes via --p-hi / --p-lo */
+.arsenal-card__tile {
+  display: grid;
+  place-items: center;
+  width: 88px;
+  height: 88px;
+  border-radius: 50%;
+  background:
+    /* solid centre disc — the planet texture lives only in the outer band */
+    radial-gradient(circle at 50% 50%, #101220 0%, #101220 56%, rgba(16, 18, 32, 0.85) 60%, transparent 64%),
+    /* soft moonlight glint */
+    radial-gradient(circle at 27% 21%, rgba(255, 255, 255, 0.16) 0%, rgba(255, 255, 255, 0.04) 22%, transparent 36%),
+    /* whisper-quiet latitude bands */
+    repeating-radial-gradient(130% 60% at 50% -45%, transparent 0 8px, rgba(255, 255, 255, 0.045) 8px 12px, transparent 12px 22px, rgba(0, 0, 0, 0.12) 22px 27px),
+    /* surface: planet hue blended into the theme's midnight */
+    radial-gradient(circle at 34% 28%, color-mix(in srgb, var(--p-hi) 46%, #151726) 0%, color-mix(in srgb, var(--p-lo) 55%, #0d0f1a) 86%);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  box-shadow:
+    inset -12px -10px 24px rgba(0, 0, 0, 0.55),
+    inset 4px 4px 12px rgba(255, 255, 255, 0.04),
+    0 10px 30px rgba(0, 0, 0, 0.4),
+    0 0 22px color-mix(in srgb, var(--p-hi) 12%, transparent);
+  transition: border-color 0.35s var(--ease-out), transform 0.35s var(--ease-out),
+    box-shadow 0.35s var(--ease-out);
+}
+
+.arsenal-card__tile img {
+  position: relative;
+  z-index: 1;
+  filter: drop-shadow(0 0 8px rgba(0, 0, 0, 0.85)) drop-shadow(0 2px 4px rgba(0, 0, 0, 0.6));
+}
+
+.is-grid .arsenal-card:hover .arsenal-card__tile {
+  border-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-4px);
+  box-shadow:
+    inset -12px -10px 24px rgba(0, 0, 0, 0.55),
+    inset 4px 4px 12px rgba(255, 255, 255, 0.04),
+    0 16px 36px rgba(0, 0, 0, 0.5),
+    0 0 30px color-mix(in srgb, var(--p-hi) 24%, transparent);
+}
+
+.arsenal-card__tile img {
+  width: 42px;
+  height: 42px;
+}
+
+/* Names appear only once the grid has settled */
+
+.arsenal-card__name {
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: var(--ink-dim);
+  white-space: nowrap;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.5s var(--ease-out), transform 0.5s var(--ease-out);
+}
+
+.is-grid .arsenal-card__name {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.is-grid .arsenal-card:hover .arsenal-card__name {
+  color: var(--ink);
+}
+
+/* Stagger the name reveal a touch */
+.is-grid .arsenal-card:nth-child(odd) .arsenal-card__name {
+  transition-delay: 0.08s;
+}
+
+/* --- Responsive --- */
+
+@media (max-width: 640px) {
+  .arsenal__marquee {
+    padding: 0.9rem 0;
+  }
+
+  .arsenal__marquee-item {
+    font-size: 1.3rem;
+  }
+
+  .arsenal__marquee-star {
+    margin-inline: 0.9rem;
+  }
+
+  .arsenal__stage {
+    height: 500px;
+  }
+
+  .arsenal-card__tile {
+    width: 52px;
+    height: 52px;
+  }
+
+  .arsenal-card__tile img {
+    width: 25px;
+    height: 25px;
+  }
+
+  .arsenal-card__name {
+    font-size: 0.62rem;
+  }
+
+  .arsenal-card {
+    gap: 0.3rem;
+  }
+
+  .arsenal__planet-core {
+    width: 118px;
+    height: 118px;
+  }
+}

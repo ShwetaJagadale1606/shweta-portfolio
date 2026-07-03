@@ -1,0 +1,261 @@
+/* ============================================================
+   Design System — Shweta Jagadale
+   Midnight blue-black. Pink & periwinkle. Serif elegance.
+   ============================================================ */
+
+:root {
+  /* Palette */
+  --bg: #0b0c13;
+  --bg-soft: #121420;
+  --ink: #eae8f2;
+  --ink-dim: #9b97b0;
+  --ink-faint: #565370;
+  --line: rgba(234, 232, 242, 0.13);
+  --line-soft: rgba(234, 232, 242, 0.07);
+  --accent: #8ba3ff;
+  --accent-2: #ef8ab2;
+  --accent-soft: rgba(139, 163, 255, 0.13);
+  --accent-2-soft: rgba(239, 138, 178, 0.11);
+
+  /* Dark card tints */
+  --tint-pink: #241623;
+  --tint-blue: #151b2e;
+  --tint-violet: #1d1730;
+  --tint-slate: #12192357;
+  --tint-slate-solid: #131a26;
+
+  /* Type */
+  --font-serif: 'Fraunces', Georgia, serif;
+  --font-body: 'Satoshi', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-hand: 'Caveat', cursive;
+
+  /* Scale */
+  --text-hero: clamp(2.9rem, 8vw, 7rem);
+  --text-section: clamp(2.1rem, 4.6vw, 3.6rem);
+  --text-row: clamp(1.45rem, 3vw, 2.4rem);
+  --text-body: clamp(1rem, 1.2vw, 1.1rem);
+  --text-meta: 0.7rem;
+
+  /* Layout */
+  --gutter: clamp(1.25rem, 4vw, 4rem);
+  --section-gap: clamp(5.5rem, 14vh, 10rem);
+
+  /* Motion */
+  --ease-out: cubic-bezier(0.19, 1, 0.22, 1);
+  --ease-inout: cubic-bezier(0.76, 0, 0.24, 1);
+}
+
+/* ------------------------------------------------------------
+   Reset
+   ------------------------------------------------------------ */
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+html.lenis {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+body {
+  font-family: var(--font-body);
+  font-size: var(--text-body);
+  background: var(--bg);
+  color: var(--ink);
+  line-height: 1.6;
+  overflow-x: clip;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+ul,
+ol {
+  list-style: none;
+}
+
+button {
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-family: inherit;
+  color: inherit;
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--bg);
+}
+
+::-webkit-scrollbar {
+  width: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--ink-faint);
+  border-radius: 99px;
+}
+
+@media (pointer: fine) {
+  body.has-cursor,
+  body.has-cursor a,
+  body.has-cursor button {
+    cursor: none;
+  }
+}
+
+/* ------------------------------------------------------------
+   Utilities
+   ------------------------------------------------------------ */
+
+.container {
+  width: 100%;
+  padding-inline: var(--gutter);
+}
+
+.meta {
+  font-family: var(--font-body);
+  font-size: var(--text-meta);
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+}
+
+.meta--accent {
+  color: var(--accent);
+}
+
+.serif-i {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: 0;
+}
+
+.hand {
+  font-family: var(--font-hand);
+  font-weight: 500;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+/* Scroll progress bar */
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  z-index: 950;
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  transform-origin: left;
+  will-change: transform;
+}
+
+/* Section header shared pattern */
+.section-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-bottom: 1.1rem;
+  border-bottom: 1px solid var(--line);
+  margin-bottom: clamp(2.2rem, 5vw, 4rem);
+}
+
+.section-head h2 {
+  font-family: var(--font-serif);
+  font-size: var(--text-section);
+  font-weight: 380;
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+}
+
+/* Masked line reveal */
+.reveal-line {
+  display: block;
+  overflow: hidden;
+}
+
+.reveal-line > * {
+  display: block;
+  will-change: transform;
+}
+
+/* Twinkling sparkle */
+.spark {
+  position: absolute;
+  pointer-events: none;
+  color: var(--accent-2);
+  animation: spark-twinkle 3.2s ease-in-out infinite;
+}
+
+.spark--blue {
+  color: var(--accent);
+}
+
+@keyframes spark-twinkle {
+  0%, 100% { opacity: 0.15; transform: scale(0.7) rotate(0deg); }
+  50% { opacity: 1; transform: scale(1.15) rotate(25deg); }
+}
+
+/* ------------------------------------------------------------
+   Mobile type scale — everything a step smaller and tighter
+   ------------------------------------------------------------ */
+
+@media (max-width: 640px) {
+  :root {
+    --text-hero: 2.5rem;
+    --text-section: 1.85rem;
+    --text-row: 1.35rem;
+    --text-body: 0.95rem;
+    --text-meta: 0.64rem;
+    --section-gap: 4.5rem;
+  }
+
+  .section-head {
+    padding-bottom: 0.85rem;
+    margin-bottom: 1.8rem;
+  }
+}
+
+/* ------------------------------------------------------------
+   Accessibility
+   ------------------------------------------------------------ */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

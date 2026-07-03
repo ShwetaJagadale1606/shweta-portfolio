@@ -1,0 +1,481 @@
+/* --- Launcher — docked in the top bar, right of the nav links --- */
+
+.wish-fab {
+  position: absolute;
+  top: 2rem;
+  right: var(--gutter);
+  z-index: 940;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  color: var(--ink);
+  background: rgba(20, 21, 31, 0.85);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: color 0.35s var(--ease-out);
+}
+
+/* Waves rippling out from behind the button */
+.wish-fab__waves {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.wish-fab__waves span {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 1px solid rgba(239, 138, 178, 0.55);
+  animation: wish-wave 3s cubic-bezier(0.19, 1, 0.22, 1) infinite;
+}
+
+.wish-fab__waves span:nth-child(2) {
+  border-color: rgba(139, 163, 255, 0.5);
+  animation-delay: 1s;
+}
+
+.wish-fab__waves span:nth-child(3) {
+  border-color: rgba(234, 232, 242, 0.35);
+  animation-delay: 2s;
+}
+
+@keyframes wish-wave {
+  0% { transform: scale(1); opacity: 0.7; }
+  100% { transform: scale(2.1); opacity: 0; }
+}
+
+/* Waves settle once the chat is open */
+.wish-fab--open .wish-fab__waves {
+  display: none;
+}
+
+/* Gradient border ring */
+.wish-fab__ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  padding: 1px;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+.wish-fab::after {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: 50%;
+  box-shadow: 0 0 20px rgba(239, 138, 178, 0.22), 0 0 32px rgba(139, 163, 255, 0.14);
+  animation: wish-breathe 3.2s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes wish-breathe {
+  0%, 100% { opacity: 0.45; }
+  50% { opacity: 1; }
+}
+
+.wish-fab:hover {
+  color: var(--accent-2);
+}
+
+.wish-fab--open {
+  color: var(--ink-dim);
+}
+
+/* --- Annotation note --- */
+
+.wish-note {
+  position: absolute;
+  top: calc(2rem + 46px + 0.5rem);
+  right: var(--gutter);
+  z-index: 935;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  text-align: right;
+  max-width: 250px;
+  transition: opacity 0.9s ease, transform 0.9s var(--ease-out);
+}
+
+.wish-note--hidden {
+  opacity: 0 !important;
+  transform: translateY(-10px);
+  pointer-events: none;
+}
+
+.wish-note__arrow {
+  width: 34px;
+  height: 50px;
+  margin-right: 6px;
+  margin-bottom: 0.55rem;
+  stroke: var(--accent-2);
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: 0.85;
+}
+
+.wish-note__line {
+  display: inline-flex;
+  justify-content: flex-end;
+  column-gap: 0.3em;
+  font-size: 1.05rem;
+  line-height: 1.35;
+  color: var(--ink-dim);
+  white-space: nowrap;
+  transform: rotate(-2deg);
+}
+
+.wish-note__line--accent {
+  color: var(--accent-2);
+  font-size: 1.15rem;
+  margin-top: 0.15rem;
+}
+
+.wish-note__word {
+  display: inline-block;
+  will-change: transform;
+}
+
+/* Flower keeps swaying gently after it blooms */
+.wish-note__flower {
+  transform-origin: 50% 85%;
+  animation: wish-flower-sway 3.4s ease-in-out 4.5s infinite;
+}
+
+@keyframes wish-flower-sway {
+  0%, 100% { transform: rotate(-9deg); }
+  50% { transform: rotate(11deg) scale(1.08); }
+}
+
+@media (max-width: 640px) {
+  .wish-note {
+    display: none;
+  }
+}
+
+/* --- Panel — gradient-edged glass --- */
+
+.wish-panel {
+  position: absolute;
+  top: 5.7rem;
+  right: var(--gutter);
+  z-index: 930;
+  width: min(370px, calc(100vw - 2 * var(--gutter)));
+  display: flex;
+  flex-direction: column;
+  background:
+    radial-gradient(120% 60% at 0% 0%, rgba(239, 138, 178, 0.06) 0%, transparent 55%),
+    radial-gradient(120% 70% at 100% 100%, rgba(139, 163, 255, 0.07) 0%, transparent 55%),
+    rgba(15, 16, 25, 0.92);
+  backdrop-filter: blur(22px);
+  -webkit-backdrop-filter: blur(22px);
+  border-radius: 22px;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6), 0 0 44px rgba(139, 163, 255, 0.05);
+  overflow: hidden;
+  transform-origin: top right;
+}
+
+/* Gradient hairline border */
+.wish-panel::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 22px;
+  padding: 1px;
+  background: linear-gradient(160deg, rgba(239, 138, 178, 0.45), rgba(234, 232, 242, 0.08) 35%, rgba(139, 163, 255, 0.4));
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* --- Head --- */
+
+.wish-panel__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.8rem;
+  padding: 1rem 1.15rem 0.9rem;
+  border-bottom: 1px solid var(--line-soft);
+}
+
+.wish-panel__id {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+}
+
+.wish-panel__orb {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  color: #17101c;
+  background: linear-gradient(135deg, var(--accent-2), var(--accent));
+  box-shadow: 0 0 18px rgba(239, 138, 178, 0.35);
+  animation: wish-orb 4s ease-in-out infinite;
+  will-change: transform;
+}
+
+@keyframes wish-orb {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+.wish-panel__name {
+  font-size: 1.15rem;
+  line-height: 1.15;
+  color: var(--ink);
+}
+
+.wish-panel__tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.66rem;
+  color: var(--ink-faint);
+  letter-spacing: 0.05em;
+}
+
+.wish-panel__status {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #7ee2a8;
+  box-shadow: 0 0 8px rgba(126, 226, 168, 0.6);
+}
+
+.wish-panel__actions {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.wish-panel__icon-btn {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 1px solid var(--line-soft);
+  color: var(--ink-dim);
+  transition: all 0.35s var(--ease-out);
+}
+
+.wish-panel__icon-btn:hover {
+  color: var(--ink);
+  border-color: var(--line);
+}
+
+.wish-panel__icon-btn.is-on {
+  color: #17101c;
+  background: var(--accent-2);
+  border-color: var(--accent-2);
+}
+
+/* --- Body --- */
+
+.wish-panel__body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  padding: 1.05rem 1.15rem;
+  height: 296px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--ink-faint) transparent;
+}
+
+.wish-msg {
+  max-width: 84%;
+  padding: 0.62rem 0.9rem;
+  border-radius: 16px;
+  font-size: 0.85rem;
+  line-height: 1.55;
+}
+
+.wish-msg--bot {
+  align-self: flex-start;
+  background: rgba(234, 232, 242, 0.045);
+  border: 1px solid rgba(239, 138, 178, 0.16);
+  border-left: 2px solid rgba(239, 138, 178, 0.55);
+  border-bottom-left-radius: 5px;
+  color: var(--ink);
+}
+
+.wish-msg--user {
+  align-self: flex-end;
+  background: linear-gradient(135deg, rgba(139, 163, 255, 0.16), rgba(139, 163, 255, 0.08));
+  border: 1px solid rgba(139, 163, 255, 0.24);
+  border-bottom-right-radius: 5px;
+  color: var(--ink);
+}
+
+/* Typing dots */
+
+.wish-msg--typing {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  padding: 0.8rem 0.95rem;
+}
+
+.wish-msg--typing span {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--accent-2);
+  animation: wish-typing 1s ease-in-out infinite;
+}
+
+.wish-msg--typing span:nth-child(2) {
+  background: var(--accent);
+  animation-delay: 0.15s;
+}
+
+.wish-msg--typing span:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+@keyframes wish-typing {
+  0%, 100% { opacity: 0.3; transform: translateY(0); }
+  50% { opacity: 1; transform: translateY(-3px); }
+}
+
+/* --- Suggestion chips --- */
+
+.wish-panel__chips {
+  display: flex;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+  padding: 0.1rem 1.15rem 0.8rem;
+}
+
+.wish-chip {
+  font-family: var(--font-hand);
+  font-size: 0.95rem;
+  line-height: 1;
+  color: var(--ink);
+  padding: 0.4rem 0.8rem;
+  border: 1px solid rgba(239, 138, 178, 0.3);
+  background: rgba(239, 138, 178, 0.07);
+  border-radius: 99px;
+  transform: rotate(-1.5deg);
+  transition: all 0.3s var(--ease-out);
+}
+
+.wish-chip--blue {
+  border-color: rgba(139, 163, 255, 0.3);
+  background: rgba(139, 163, 255, 0.07);
+  transform: rotate(1.5deg);
+}
+
+.wish-chip:hover {
+  transform: rotate(0deg) translateY(-2px);
+  background: rgba(239, 138, 178, 0.15);
+}
+
+.wish-chip--blue:hover {
+  background: rgba(139, 163, 255, 0.15);
+}
+
+/* --- Input row --- */
+
+.wish-panel__input {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.8rem 0.9rem 0.9rem;
+  border-top: 1px solid var(--line-soft);
+}
+
+.wish-panel__input input {
+  flex: 1;
+  min-width: 0;
+  background: rgba(234, 232, 242, 0.05);
+  border: 1px solid var(--line-soft);
+  border-radius: 99px;
+  padding: 0.6rem 1rem;
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  color: var(--ink);
+  outline: none;
+  transition: border-color 0.3s var(--ease-out), box-shadow 0.3s var(--ease-out);
+}
+
+.wish-panel__input input::placeholder {
+  color: var(--ink-faint);
+}
+
+.wish-panel__input input:focus {
+  border-color: rgba(139, 163, 255, 0.45);
+  box-shadow: 0 0 0 3px rgba(139, 163, 255, 0.08);
+}
+
+.wish-panel__mic,
+.wish-panel__send {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  border: 1px solid var(--line-soft);
+  color: var(--ink-dim);
+  transition: all 0.3s var(--ease-out);
+}
+
+.wish-panel__send {
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  border: none;
+  color: #17101c;
+}
+
+.wish-panel__send:hover {
+  transform: translateY(-2px) rotate(-8deg);
+  box-shadow: 0 8px 20px rgba(239, 138, 178, 0.3);
+}
+
+.wish-panel__mic:hover {
+  color: var(--ink);
+  border-color: var(--line);
+}
+
+.wish-panel__mic.is-listening {
+  color: #17101c;
+  background: var(--accent-2);
+  border-color: var(--accent-2);
+  animation: wish-breathe 1.2s ease-in-out infinite;
+}
+
+/* --- Responsive --- */
+
+@media (max-width: 640px) {
+  /* Docked below the mobile nav — clear of the hero's bottom meta row */
+  .wish-fab {
+    top: 5rem;
+    bottom: auto;
+    width: 44px;
+    height: 44px;
+  }
+
+  .wish-panel {
+    top: calc(5rem + 44px + 0.6rem);
+    bottom: auto;
+    transform-origin: top right;
+  }
+
+  .wish-panel__body {
+    height: 236px;
+  }
+}

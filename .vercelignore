@@ -1,0 +1,9 @@
+# Unrelated projects living in this folder — never upload
+backend
+Mine_portfolio
+
+# Local-only
+node_modules
+dist
+.claude
+.DS_Store

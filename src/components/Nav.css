@@ -1,0 +1,213 @@
+.nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 960;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 2.6rem var(--gutter) 1.4rem;
+  background: linear-gradient(to bottom, rgba(11, 12, 19, 0.92), rgba(11, 12, 19, 0));
+}
+
+.nav__brand {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 1.1rem;
+  font-weight: 400;
+  color: var(--ink);
+}
+
+.nav__brand-mark {
+  font-style: normal;
+  font-size: 0.72em;
+  vertical-align: super;
+  margin-left: 3px;
+  color: var(--accent-2);
+}
+
+.nav__links {
+  display: flex;
+  align-items: center;
+  gap: clamp(1.1rem, 3vw, 2.2rem);
+  /* leave room for the Wish launcher docked at the far right */
+  margin-right: calc(46px + 1.6rem);
+}
+
+.nav__link {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink);
+  padding: 0.35rem 0;
+}
+
+.nav__link-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--accent-2);
+  transform: scale(0);
+  transition: transform 0.3s var(--ease-out);
+}
+
+.nav__link::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 1px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.45s var(--ease-out);
+}
+
+.nav__link:hover .nav__link-dot {
+  transform: scale(1);
+}
+
+.nav__link:hover::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+/* --- Hamburger (mobile only) --- */
+
+.nav__burger {
+  display: none;
+  position: relative;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  background: rgba(20, 21, 31, 0.6);
+  flex-shrink: 0;
+  transition: border-color 0.35s var(--ease-out);
+}
+
+.nav__burger:active {
+  border-color: var(--accent-2);
+}
+
+/* Asymmetric lines — top full, bottom short — morphing to an X */
+.nav__burger span {
+  position: absolute;
+  top: 50%;
+  height: 1.6px;
+  background: var(--ink);
+  border-radius: 2px;
+  transition: all 0.45s var(--ease-out);
+}
+
+.nav__burger span:first-child {
+  left: 12px;
+  width: 18px;
+  transform: translateY(-4px);
+}
+
+.nav__burger span:last-child {
+  left: 19px;
+  width: 11px;
+  background: var(--accent-2);
+  transform: translateY(3px);
+}
+
+.nav__burger.is-open span:first-child {
+  transform: translateY(-1px) rotate(45deg);
+}
+
+.nav__burger.is-open span:last-child {
+  left: 12px;
+  width: 18px;
+  transform: translateY(-1px) rotate(-45deg);
+}
+
+/* --- Mobile menu overlay --- */
+
+.nav-menu {
+  position: fixed;
+  inset: 0;
+  z-index: 950;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: var(--gutter);
+  background: rgba(11, 12, 19, 0.96);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+}
+
+.nav-menu__links {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.nav-menu__link {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+  font-family: var(--font-serif);
+  font-size: clamp(2.4rem, 11vw, 3.6rem);
+  font-weight: 380;
+  line-height: 1.15;
+  color: var(--ink);
+  text-align: left;
+  padding: 0.35rem 0;
+  border-bottom: 1px solid var(--line-soft);
+}
+
+.nav-menu__link:active {
+  color: var(--accent-2);
+}
+
+.nav-menu__num {
+  color: var(--ink-faint);
+}
+
+.nav-menu__foot {
+  position: absolute;
+  left: var(--gutter);
+  right: var(--gutter);
+  bottom: 2.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.nav-menu__foot a {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 1.05rem;
+  color: var(--accent-2);
+}
+
+/* --- Responsive --- */
+
+@media (max-width: 700px) {
+  .nav {
+    padding: 1.4rem var(--gutter) 1rem;
+    align-items: center;
+  }
+
+  .nav__brand {
+    font-size: 1rem;
+  }
+
+  .nav__links {
+    display: none;
+  }
+
+  .nav__burger {
+    display: grid;
+  }
+}
