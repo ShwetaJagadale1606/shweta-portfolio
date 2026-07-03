@@ -9,6 +9,14 @@
   justify-content: space-between;
   padding: 2.6rem var(--gutter) 1.4rem;
   background: linear-gradient(to bottom, rgba(11, 12, 19, 0.92), rgba(11, 12, 19, 0));
+  /* the bar itself is click-through — it overlaps the Wish launcher */
+  pointer-events: none;
+}
+
+.nav__brand,
+.nav__links,
+.nav__burger {
+  pointer-events: auto;
 }
 
 .nav__brand {
